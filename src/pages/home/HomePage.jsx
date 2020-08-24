@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 //components
 import InputField from '../../components/InputField/InputField';
+import Map from '../../components/Map/Map';
 
 //styling
 import { HomeWrapper } from './HomePage.styles';
@@ -61,7 +62,9 @@ export default () => {
             GET DETAILS
           </button>
         </div>
-        <div className="map-area">Map Area</div>
+        <div className="map-area">
+          <Map />
+        </div>
       </HomeWrapper>
     </>
   );
