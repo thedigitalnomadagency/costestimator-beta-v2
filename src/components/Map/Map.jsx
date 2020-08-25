@@ -1,18 +1,26 @@
-import React from 'react';
-import { GoogleMap, useLoadScript } from '@react-google-maps/api';
+import React, { useState, useCallback } from 'react';
+import {
+  GoogleMap,
+  useLoadScript,
+  DirectionsService,
+  DirectionsRenderer,
+} from '@react-google-maps/api';
+import { motion } from 'framer-motion';
+
+//components
+import Search from '../Search/Search';
 
 //styling
-import MapStyles from './Map.styles';
+import { MapWrapper } from './Map.styles';
 
 const libraries = ['places'];
 
-const mapContainerStyle = {
+const mapContainerStyles = {
   height: '100%',
   width: '100%',
 };
 
 const options = {
-  styles: MapStyles,
   disableDefaultUI: true,
   zoomControl: true,
 };
@@ -22,24 +30,106 @@ const center = {
   lng: -0.186964,
 };
 
-export default ({ children }) => {
+export default () => {
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries,
   });
 
+  const [pickup, setPickup] = useState('');
+  const [destination, setDestination] = useState('');
+  const [directions, setDirections] = useState(null);
+  const [viewSteps, setViewSteps] = useState(false);
+
+  const directionsCallback = useCallback((response) => {
+    if (response !== null) {
+      if (response.status === 'OK') {
+        setDirections(response);
+      }
+    }
+  }, []);
+
   if (loadError) return 'Error';
-  if (!isLoaded) return 'Loading...';
+  if (!isLoaded) return 'Loading Map...';
 
   return (
-    <GoogleMap
-      id="map"
-      mapContainerStyle={mapContainerStyle}
-      zoom={14}
-      center={center}
-      options={options}
-    >
-      {children}
-    </GoogleMap>
+    <MapWrapper>
+      <div className="form">
+        <Search
+          setAddress={setPickup}
+          placeholder="Pickup Location"
+          className="pickup"
+        />
+        <Search
+          setAddress={setDestination}
+          placeholder="Destination Location"
+          className="destination"
+        />
+      </div>
+
+      {directions && (
+        <motion.div
+          initial={{ x: '-150px' }}
+          animate={{ x: 0 }}
+          transition={{ type: 'spring' }}
+          className="results"
+        >
+          <h1 className="text">
+            Distance: {directions.routes[0].legs[0].distance.text}
+          </h1>
+          <h1 className="text">
+            Duration: {directions.routes[0].legs[0].duration.text}
+          </h1>
+          <h1 className="text">
+            Delivery Cost: GH¢
+            {Math.round(
+              (directions.routes[0].legs[0].distance.value / 1000) * 2
+            ).toFixed(2)}
+          </h1>
+          <button onClick={() => setViewSteps(!viewSteps)} className="btn">
+            {viewSteps ? 'Hide Directions' : 'Show Directions'}
+          </button>
+          {viewSteps && (
+            <div className="steps">
+              {directions.routes[0].legs[0].steps.map(
+                ({ instructions }, idx) => (
+                  <h1
+                    className="text"
+                    key={idx}
+                    dangerouslySetInnerHTML={{ __html: instructions }}
+                  ></h1>
+                )
+              )}
+            </div>
+          )}
+        </motion.div>
+      )}
+
+      <GoogleMap
+        mapContainerStyle={mapContainerStyles}
+        zoom={14}
+        center={center}
+        options={options}
+      >
+        {destination !== '' && pickup !== '' && (
+          <DirectionsService
+            options={{
+              destination: destination,
+              origin: pickup,
+              travelMode: 'DRIVING',
+            }}
+            callback={directionsCallback}
+          />
+        )}
+
+        {directions !== null && (
+          <DirectionsRenderer
+            options={{
+              directions: directions,
+            }}
+          />
+        )}
+      </GoogleMap>
+    </MapWrapper>
   );
 };

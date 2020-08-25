@@ -1,4 +1,27 @@
-export default [
+import tw, { styled } from 'twin.macro';
+
+export const MapWrapper = styled.div`
+  ${tw`relative`}
+  height: 95vh;
+
+  .form {
+    ${tw`absolute z-10 flex flex-col items-center w-full p-4 `}
+  }
+
+  .results {
+    ${tw`absolute bottom-0 z-20 w-auto h-auto p-8 mt-40 mb-5 ml-5 bg-white rounded-md md:top-0`}
+  }
+
+  .text {
+    ${tw`text-lg text-gray-700`}
+  }
+
+  .btn {
+    ${tw`px-4 py-2 my-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none`}
+  }
+`;
+
+export const mapTheme = [
   {
     featureType: 'administrative',
     elementType: 'labels.text.fill',
