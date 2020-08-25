@@ -1,18 +1,10 @@
 import tw, { styled } from 'twin.macro';
 
 export const HomeWrapper = styled.div`
-  ${tw`grid grid-rows-2 lg:grid-rows-1 lg:grid-cols-2`};
+  ${tw`relative grid`};
   height: 95vh;
 
-  .form-area {
-    ${tw`p-4 lg:p-12`}
-  }
-
-  .btn {
-    ${tw`px-4 py-2 font-bold text-white bg-black outline-none hover:bg-gray-700`}
-  }
-
-  .map-area {
-    ${tw`border`}
+  .results {
+    ${tw`absolute bottom-0 z-50 w-56 h-40 p-4 m-2 bg-white rounded md:top-0`}
   }
 `;

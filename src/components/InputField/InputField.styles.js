@@ -1,13 +1,9 @@
 import tw, { styled } from 'twin.macro';
 
 export const InputFieldWrapper = styled.div`
-  ${tw`mb-4`}
+  ${tw`relative z-40 flex justify-center w-full h-auto mt-5`}
 
-  .label {
-    ${tw`block mb-2 text-base font-bold text-gray-700`}
-  }
-
-  .text-input {
-    ${tw`w-full px-3 py-2 leading-tight text-gray-700 border border-black appearance-none focus:outline-none`}
+  .input-field {
+    ${tw`w-6/12 px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none`}
   }
 `;

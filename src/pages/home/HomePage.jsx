@@ -1,4 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
+import {
+  DirectionsService,
+  DirectionsRenderer,
+  Autocomplete,
+} from '@react-google-maps/api';
 
 //components
 import InputField from '../../components/InputField/InputField';
@@ -8,63 +13,96 @@ import Map from '../../components/Map/Map';
 import { HomeWrapper } from './HomePage.styles';
 
 export default () => {
-  const [points, setPoints] = useState({
-    pickup: '',
-    destination: '',
-  });
+  const [pickup, setPickup] = useState('');
+  const [destination, setDestination] = useState('');
+  const [directions, setDirection] = useState(null);
+  const [pickupAutocomplete, setPickupAutocomplete] = useState(null);
+  const [destinationAutocomplete, setDestinationAutocomplete] = useState(null);
 
-  const { pickup, destination } = points;
+  const directionsCallback = useCallback((response) => {
+    if (response !== null) {
+      if (response.status === 'OK') {
+        setDirection(response);
+      }
+    }
+  }, []);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-
-    setPoints({
-      ...points,
-      [name]: value,
-    });
+  const onPickupLoad = (autocomplete) => {
+    setPickupAutocomplete(autocomplete);
   };
 
-  const handleSubmit = async () => {
-    if (pickup === '' && destination === '') {
-      console.log('Fields cannot be empty. Try Again');
-      return;
-    }
+  const onDestinationLoad = (autocomplete) => {
+    setDestinationAutocomplete(autocomplete);
+  };
 
-    console.log(points);
+  const onPickupChanged = () => {
+    if (pickupAutocomplete !== null) {
+      const place = pickupAutocomplete.getPlace();
+      if (place !== undefined) {
+        setPickup(place.formatted_address);
+      }
+    } else {
+      console.log('Autocomplete is not loaded yet!');
+    }
+  };
+
+  const onDestinationChanged = () => {
+    if (destinationAutocomplete !== null) {
+      const place = destinationAutocomplete.getPlace();
+      if (place !== undefined) {
+        setDestination(place.formatted_address);
+      }
+    } else {
+      console.log('Autocomplete is not loaded yet!');
+    }
   };
 
   return (
     <>
       <HomeWrapper>
-        <div className="form-area">
-          <form>
-            <InputField
-              label="Pickup Point"
-              type="text"
-              name="pickup"
-              id="pickup"
-              placeholder="Eg. Spintex Road, Junction"
-              handleChange={handleChange}
-              value={pickup}
-            />
+        <>
+          <>
+            {directions && (
+              <div className="results">
+                <h1>distance: {directions.routes[0].legs[0].distance.text}</h1>
+                <h1>duration: {directions.routes[0].legs[0].duration.text}</h1>
+              </div>
+            )}
+          </>
+          <Map>
+            {destination !== '' && pickup !== '' && (
+              <DirectionsService
+                options={{
+                  destination: destination,
+                  origin: pickup,
+                  travelMode: 'DRIVING',
+                }}
+                callback={directionsCallback}
+              />
+            )}
 
-            <InputField
-              label="Destination"
-              type="text"
-              name="destination"
-              id="destination"
-              placeholder="Eg. Ashongman Estates, F line"
-              handleChange={handleChange}
-              value={destination}
-            />
-          </form>
-          <button className="btn" onClick={handleSubmit}>
-            GET DETAILS
-          </button>
-        </div>
-        <div className="map-area">
-          <Map />
-        </div>
+            {directions !== null && (
+              <DirectionsRenderer
+                options={{
+                  directions: directions,
+                }}
+              />
+            )}
+
+            <Autocomplete
+              onLoad={onPickupLoad}
+              onPlaceChanged={onPickupChanged}
+            >
+              <InputField placeholder="pickup location" />
+            </Autocomplete>
+            <Autocomplete
+              onLoad={onDestinationLoad}
+              onPlaceChanged={onDestinationChanged}
+            >
+              <InputField placeholder="destination location" />
+            </Autocomplete>
+          </Map>
+        </>
       </HomeWrapper>
     </>
   );

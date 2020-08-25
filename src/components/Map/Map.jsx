@@ -22,7 +22,7 @@ const center = {
   lng: -0.186964,
 };
 
-export default () => {
+export default ({ children }) => {
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries,
@@ -33,10 +33,13 @@ export default () => {
 
   return (
     <GoogleMap
+      id="map"
       mapContainerStyle={mapContainerStyle}
       zoom={14}
       center={center}
       options={options}
-    ></GoogleMap>
+    >
+      {children}
+    </GoogleMap>
   );
 };
