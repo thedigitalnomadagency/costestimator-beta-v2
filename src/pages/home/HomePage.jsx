@@ -41,8 +41,6 @@ export default () => {
       if (place !== undefined) {
         setPickup(place.formatted_address);
       }
-    } else {
-      console.log('Autocomplete is not loaded yet!');
     }
   };
 
@@ -52,8 +50,6 @@ export default () => {
       if (place !== undefined) {
         setDestination(place.formatted_address);
       }
-    } else {
-      console.log('Autocomplete is not loaded yet!');
     }
   };
 
