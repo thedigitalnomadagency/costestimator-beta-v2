@@ -1,8 +1,8 @@
 import tw, { styled } from 'twin.macro';
 
 export const MapWrapper = styled.div`
-  ${tw`relative`}
-  height: 95vh;
+  ${tw`relative h-auto`}
+  height: 93%;
 
   .form {
     ${tw`absolute z-10 flex flex-col items-center w-full p-4 `}

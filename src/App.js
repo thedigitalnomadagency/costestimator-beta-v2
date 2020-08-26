@@ -2,7 +2,7 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 //components
-import TitleBar from './components/TitleBar/TitleBar';
+import NavBar from './components/NavBar/NavBar';
 
 //pages
 import Home from './pages/home/HomePage';
@@ -15,11 +15,13 @@ const App = () => {
   return (
     <>
       <GlobalStyle />
-      <TitleBar />
-      <Switch>
-        <Route exact path="/" component={Home} />
-        <Route exact path="/settings" component={Settings} />
-      </Switch>
+      <div className="App">
+        <NavBar />
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/settings" component={Settings} />
+        </Switch>
+      </div>
     </>
   );
 };

@@ -9,4 +9,8 @@ export default createGlobalStyle`
   body{
     font-family: 'Nunito', sans-serif;
   }
+
+  .App {
+    ${tw`h-screen`}
+  }
 `;
