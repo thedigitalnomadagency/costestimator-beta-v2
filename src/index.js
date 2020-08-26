@@ -1,14 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import 'tailwindcss/dist/base.min.css';
+import { BrowserRouter } from 'react-router-dom';
+
+//main app component
 import App from './App';
+
+//styling
+import 'tailwindcss/dist/base.min.css';
+
+//PWA
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <BrowserRouter>
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  </BrowserRouter>,
   document.getElementById('root')
 );
 
