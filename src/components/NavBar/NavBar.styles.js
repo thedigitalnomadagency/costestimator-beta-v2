@@ -12,7 +12,7 @@ export const NavBarWrapper = styled.nav`
   }
 
   .links {
-    ${tw`hidden md:flex h-full`}
+    ${tw`flex h-full`}
   }
 
   .link {
@@ -27,5 +27,3 @@ export const NavBarWrapper = styled.nav`
     ${tw`border-b-2 border-red-700`}
   }
 `;
-
-// ${({ active }) => (active ? tw`border-b-2 border-red-700` : tw`border-0`)}
