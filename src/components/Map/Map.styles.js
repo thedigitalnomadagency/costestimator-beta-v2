@@ -15,10 +15,6 @@ export const MapWrapper = styled.div`
   .text {
     ${tw`text-lg text-gray-700`}
   }
-
-  .btn {
-    ${tw`px-4 py-2 my-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none`}
-  }
 `;
 
 export const mapTheme = [

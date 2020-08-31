@@ -39,7 +39,6 @@ export default () => {
   const [pickup, setPickup] = useState('');
   const [destination, setDestination] = useState('');
   const [directions, setDirections] = useState(null);
-  const [viewSteps, setViewSteps] = useState(false);
 
   const directionsCallback = useCallback((response) => {
     if (response !== null) {
@@ -55,15 +54,10 @@ export default () => {
   return (
     <MapWrapper>
       <div className="form">
-        <Search
-          setAddress={setPickup}
-          placeholder="Pickup Location"
-          className="pickup"
-        />
+        <Search setAddress={setPickup} placeholder="Pickup Location" />
         <Search
           setAddress={setDestination}
           placeholder="Destination Location"
-          className="destination"
         />
       </div>
 
@@ -86,22 +80,6 @@ export default () => {
               (directions.routes[0].legs[0].distance.value / 1000) * 2
             ).toFixed(2)}
           </h1>
-          <button onClick={() => setViewSteps(!viewSteps)} className="btn">
-            {viewSteps ? 'Hide Directions' : 'Show Directions'}
-          </button>
-          {viewSteps && (
-            <div className="steps">
-              {directions.routes[0].legs[0].steps.map(
-                ({ instructions }, idx) => (
-                  <h1
-                    className="text"
-                    key={idx}
-                    dangerouslySetInnerHTML={{ __html: instructions }}
-                  ></h1>
-                )
-              )}
-            </div>
-          )}
         </motion.div>
       )}
 
