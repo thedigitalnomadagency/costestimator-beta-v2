@@ -1,9 +1,71 @@
 import React from 'react';
 
+//styling
+import { SettingsWrapper } from './SettingPage.styles';
+
 export default () => {
+  const minValue = 0;
+
   return (
-    <div>
-      <h1>Settings Page</h1>
-    </div>
+    <SettingsWrapper>
+      <form className="form">
+        <div className="input-wrapper">
+          <label className="label" htmlFor="minDistance">
+            Min Distance
+          </label>
+          <input
+            className="input"
+            id="minDistance"
+            type="text"
+            value={minValue}
+            disabled
+          />
+        </div>
+
+        <div className="input-wrapper">
+          <label className="label" htmlFor="maxDistance">
+            Max Distance
+          </label>
+          <input className="input" id="maxDistance" type="number" />
+        </div>
+
+        <div className="input-wrapper">
+          <label className="label" htmlFor="price">
+            Price
+          </label>
+          <input className="input" id="price" type="number" />
+        </div>
+
+        {/* <div class="flex flex-wrap -mx-3 mb-2">
+          <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+            <label
+              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+              for="grid-state"
+            >
+              State
+            </label>
+            <div class="relative">
+              <select
+                class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                id="grid-state"
+              >
+                <option>New Mexico</option>
+                <option>Missouri</option>
+                <option>Texas</option>
+              </select>
+              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                <svg
+                  class="fill-current h-4 w-4"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                >
+                  <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div> */}
+      </form>
+    </SettingsWrapper>
   );
 };

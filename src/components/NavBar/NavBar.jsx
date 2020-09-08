@@ -1,12 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 //styling
 import { NavBarWrapper } from './NavBar.styles';
 
 export default () => {
-  const [homeActive, setHomeActive] = useState(true);
-  const [settingsActive, setSettingsActive] = useState(false);
+  const [homeActive, setHomeActive] = React.useState(false);
+  const [settingsActive, setSettingsActive] = React.useState(false);
+
+  React.useEffect(() => {
+    if (window.location.href.includes('/settings')) {
+      setSettingsActive(true);
+    } else {
+      setHomeActive(true);
+    }
+  }, []);
 
   const homePageActive = () => {
     setHomeActive(true);
