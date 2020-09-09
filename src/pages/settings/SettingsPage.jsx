@@ -1,71 +1,149 @@
 import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
+//actions
+import {
+  addConfig,
+  deleteConfig,
+} from '../../redux/PriceConfig/config-actions';
 
 //styling
 import { SettingsWrapper } from './SettingPage.styles';
 
 export default () => {
-  const minValue = 0;
+  const minDist = useSelector((state) => state.config.minDistance);
+  const config = useSelector((state) => state.config.config);
+  const dispatch = useDispatch();
+
+  const [priceConfig, setConfig] = React.useState({
+    maxDistance: '',
+    price: '',
+  });
+
+  const { maxDistance, price } = priceConfig;
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setConfig({
+      ...priceConfig,
+      [name]: value,
+    });
+  };
+
+  const addPriceConfig = (e) => {
+    e.preventDefault();
+
+    if (+maxDistance === 0 || +price <= 0) {
+      console.log('fields cannot be empty or price cannot be 0');
+      return;
+    }
+
+    if (+maxDistance <= minDist) {
+      console.log('max distance cannot be lower than minDistance');
+      return;
+    }
+
+    dispatch(
+      addConfig({
+        minDistance: minDist,
+        maxDistance: +maxDistance,
+        price: +price,
+      })
+    );
+
+    setConfig({
+      maxDistance: '',
+      price: '',
+    });
+  };
+
+  const deletePriceConfig = (config) => {
+    dispatch(deleteConfig(config));
+  };
 
   return (
     <SettingsWrapper>
       <form className="form">
         <div className="input-wrapper">
           <label className="label" htmlFor="minDistance">
-            Min Distance
+            Min Distance (km)
           </label>
-          <input
-            className="input"
-            id="minDistance"
-            type="text"
-            value={minValue}
-            disabled
-          />
+          <input className="input" type="text" value={minDist} disabled />
         </div>
 
         <div className="input-wrapper">
           <label className="label" htmlFor="maxDistance">
-            Max Distance
+            Max Distance (km)
           </label>
-          <input className="input" id="maxDistance" type="number" />
+          <input
+            className="input"
+            name="maxDistance"
+            type="number"
+            value={maxDistance}
+            onChange={handleChange}
+          />
         </div>
 
         <div className="input-wrapper">
           <label className="label" htmlFor="price">
-            Price
+            Price (GH¢)
           </label>
-          <input className="input" id="price" type="number" />
+          <input
+            className="input"
+            name="price"
+            type="number"
+            value={price}
+            onChange={handleChange}
+          />
         </div>
-
-        {/* <div class="flex flex-wrap -mx-3 mb-2">
-          <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-            <label
-              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              for="grid-state"
-            >
-              State
-            </label>
-            <div class="relative">
-              <select
-                class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                id="grid-state"
-              >
-                <option>New Mexico</option>
-                <option>Missouri</option>
-                <option>Texas</option>
-              </select>
-              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                <svg
-                  class="fill-current h-4 w-4"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                </svg>
-              </div>
-            </div>
-          </div>
-        </div> */}
       </form>
+      <div className="btn-wrapper">
+        <button className="btn" onClick={addPriceConfig}>
+          Add Price Config
+        </button>
+      </div>
+
+      <div className="config-wrapper">
+        {config.length > 0 ? (
+          <>
+            {config.map((config, idx) => {
+              return (
+                <div key={idx} className="config">
+                  <h1>Min Distance: {config.minDistance}KM</h1>
+                  <h2>Max Distance: {config.maxDistance}KM</h2>
+                  <h3>Price: GH¢{config.price}</h3>
+                  <button
+                    className="delete"
+                    onClick={() => deletePriceConfig(config)}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              );
+            })}
+          </>
+        ) : (
+          <div>
+            <h1>
+              You have no configuration. Use form to set your price
+              configurations
+            </h1>{' '}
+          </div>
+        )}
+      </div>
     </SettingsWrapper>
   );
 };

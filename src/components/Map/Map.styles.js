@@ -9,7 +9,7 @@ export const MapWrapper = styled.div`
   }
 
   .results {
-    ${tw`absolute bottom-0 z-20 w-auto md:h-auto p-8 mt-40 mb-5 ml-5 bg-white rounded-md md:top-0 overflow-scroll max-h-screen`}
+    ${tw`absolute bottom-0 z-20 w-auto md:h-auto p-8 mt-40 mb-5 ml-5 bg-white rounded-md md:top-0 max-h-screen`}
   }
 
   .text {

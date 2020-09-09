@@ -6,6 +6,7 @@ import {
   DirectionsRenderer,
 } from '@react-google-maps/api';
 import { motion } from 'framer-motion';
+import { useSelector } from 'react-redux';
 
 //components
 import Search from '../Search/Search';
@@ -31,6 +32,8 @@ const center = {
 };
 
 export default () => {
+  const priceConfig = useSelector((state) => state.config.config);
+
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries,
@@ -47,6 +50,19 @@ export default () => {
       }
     }
   }, []);
+
+  const calculatePrice = (distance) => {
+    const price = priceConfig.find(
+      (config) =>
+        distance <= config.maxDistance && distance >= config.minDistance
+    );
+
+    if (price) {
+      return `GH¢ ${price.price}`;
+    } else {
+      return 'Sorry no price for this distance. Add to your settings';
+    }
+  };
 
   if (loadError) return 'Error';
   if (!isLoaded) return 'Loading Map...';
@@ -75,10 +91,12 @@ export default () => {
             Duration: {directions.routes[0].legs[0].duration.text}
           </h1>
           <h1 className="text">
-            Delivery Cost: GH¢
-            {Math.round(
-              (directions.routes[0].legs[0].distance.value / 1000) * 2
-            ).toFixed(2)}
+            Delivery Cost:{' '}
+            {calculatePrice(
+              Math.round(
+                directions.routes[0].legs[0].distance.value / 1000
+              ).toFixed(2)
+            )}
           </h1>
         </motion.div>
       )}
