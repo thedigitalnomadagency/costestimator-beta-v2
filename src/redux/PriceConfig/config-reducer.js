@@ -21,6 +21,13 @@ export default (state = INTIAL_STATE, action) => {
         minDistance: action.payload.minDistance,
         config: state.config.filter((config) => config !== action.payload),
       };
+
+    case configActionTypes.RESET_CONFIG:
+      return {
+        ...state,
+        minDistance: 0,
+        config: [],
+      };
     default:
       return state;
   }

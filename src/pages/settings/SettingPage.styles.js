@@ -18,19 +18,23 @@ export const SettingsWrapper = styled.div`
   }
 
   .btn-wrapper {
-    ${tw`px-3`}
+    ${tw`px-3 flex justify-between`}
   }
 
   .btn {
-    ${tw`bg-black text-white font-semibold  py-2 px-4 uppercase text-xs`}
+    ${tw`bg-black text-white font-semibold  py-2 px-4 uppercase text-xs tracking-widest outline-none rounded`}
+  }
+
+  .btn-red {
+    ${tw`bg-red-700`}
   }
 
   .config-wrapper {
-    ${tw` mt-6`}
+    ${tw` mt-6 mx-4`}
   }
 
   .config {
-    ${tw`flex justify-between border border-black mb-4 p-2 mx-2`}
+    ${tw`flex justify-between border border-black mb-4 p-2 mx-2 rounded`}
   }
 
   .delete {

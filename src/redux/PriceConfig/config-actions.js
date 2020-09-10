@@ -9,3 +9,7 @@ export const deleteConfig = (priceConfig) => ({
   type: configActionTypes.DELETE_CONFIG,
   payload: priceConfig,
 });
+
+export const resetConfig = () => ({
+  type: configActionTypes.RESET_CONFIG,
+});

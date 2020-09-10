@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   addConfig,
   deleteConfig,
+  resetConfig,
 } from '../../redux/PriceConfig/config-actions';
 
 //styling
@@ -62,6 +63,10 @@ export default () => {
     dispatch(deleteConfig(config));
   };
 
+  const resetPriceConfig = () => {
+    dispatch(resetConfig());
+  };
+
   return (
     <SettingsWrapper>
       <form className="form">
@@ -102,6 +107,10 @@ export default () => {
         <button className="btn" onClick={addPriceConfig}>
           Add Price Config
         </button>
+
+        <button className="btn btn-red" onClick={resetPriceConfig}>
+          Reset Config
+        </button>
       </div>
 
       <div className="config-wrapper">
@@ -136,12 +145,12 @@ export default () => {
             })}
           </>
         ) : (
-          <div>
+          <>
             <h1>
               You have no configuration. Use form to set your price
               configurations
             </h1>{' '}
-          </div>
+          </>
         )}
       </div>
     </SettingsWrapper>
