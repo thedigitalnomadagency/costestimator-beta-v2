@@ -47,6 +47,7 @@ export default () => {
   const [distance, setDistance] = React.useState(0);
   const [price, setPrice] = React.useState(0);
   const [amount, setAmount] = React.useState(0);
+  const [error, setError] = React.useState('');
 
   const handleChange = (e) => {
     const { value } = e.target;
@@ -61,10 +62,14 @@ export default () => {
           distance <= config.maxDistance && distance >= config.minDistance
       );
 
-      if (price) {
+      if (price && distance) {
         const newPrice = price.price;
         setPrice(newPrice);
+        setError('');
       } else {
+        setError(
+          'Set pickup and destination locations or check your pricing configurations.'
+        );
         setPrice(0);
       }
     },
@@ -90,12 +95,13 @@ export default () => {
       if (response.status === 'OK') {
         setDirections(response);
         setDistance(response.routes[0].legs[0].distance.value / 1000);
+        setError('');
       }
     }
   }, []);
 
-  if (loadError) return 'Error';
-  if (!isLoaded) return 'Loading Map...';
+  if (loadError) return 'Could not load app. Check internet connection';
+  if (!isLoaded) return 'Loading App...';
 
   return (
     <Wrapper>
@@ -143,7 +149,12 @@ export default () => {
               placeholder="Destination Location"
             />
 
-            <button onClick={() => calculatePrice(distance)}>Get Price</button>
+            <button
+              className="price-btn"
+              onClick={() => calculatePrice(distance)}
+            >
+              Get Price
+            </button>
           </div>
 
           <div className="divide"></div>
@@ -172,10 +183,11 @@ export default () => {
             </div>
           </div>
 
-          {price && directions !== null && (
+          {price !== 0 && directions !== null && (
             <div className="summary-wrapper">
               <h1>Summary:</h1>
               <div className="summary">
+                <h1 className="text">{directions.routes[0].summary}</h1>
                 <h1 className="text">
                   Distance: {directions.routes[0].legs[0].distance.text}
                 </h1>
@@ -185,6 +197,17 @@ export default () => {
               </div>
             </div>
           )}
+
+          {error && (
+            <div className="summary-wrapper">
+              <div className="summary">
+                <h1 className="text">{error}</h1>
+              </div>
+            </div>
+          )}
+          <div className="footer">
+            <h1>Powered by Kwawco</h1>
+          </div>
         </div>
 
         <div className="map-container">

@@ -27,11 +27,11 @@ export default styled.div`
   }
 
   .form-wrapper {
-    ${tw`flex flex-col justify-center items-center px-24 py-8 lg:py-16`}
+    ${tw`flex flex-col justify-center items-center px-24 py-2 lg:py-16`}
   }
 
   .price-wrapper {
-    ${tw`flex justify-between items-center px-24 py-5`}
+    ${tw`flex justify-between items-center px-24 py-3`}
   }
 
   .amount-box {
@@ -67,7 +67,7 @@ export default styled.div`
   }
 
   .control-btn {
-    ${tw`bg-green-500 py-1 px-6 mb-3 text-3xl font-extrabold outline-none`}
+    ${tw`bg-green-500 py-1 w-10 mb-3 text-3xl font-extrabold outline-none`}
   }
 
   .summary-wrapper {
@@ -75,18 +75,22 @@ export default styled.div`
   }
 
   .summary-wrapper h1 {
-    ${tw`mx-5 text-xl`}
+    ${tw`mx-5 text-sm`}
   }
 
   .summary {
-    ${tw`flex px-24 mt-3`}
+    ${tw`flex mt-3`}
   }
 
   .summary h1 {
     ${tw`mx-4`}
   }
 
-  .map-container {
-    ${tw``}
+  .price-btn {
+    ${tw`outline-none border border-white text-white rounded w-48 font-bold py-2 uppercase tracking-wider`}
+  }
+
+  .footer {
+    ${tw`flex justify-end px-10 text-green-500`}
   }
 `;
