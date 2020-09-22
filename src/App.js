@@ -2,7 +2,7 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 //components
-import NavBar from './components/NavBar/NavBar';
+// import NavBar from './components/NavBar/NavBar';
 
 //pages
 import Home from './pages/home/HomePage';
@@ -16,7 +16,7 @@ const App = () => {
     <>
       <GlobalStyle />
       <div className="App">
-        <NavBar />
+        {/* <NavBar /> */}
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/settings" component={Settings} />
