@@ -40,4 +40,12 @@ export const SettingsWrapper = styled.div`
   .delete {
     ${tw`h-4 w-4 text-red-700 outline-none`}
   }
+
+  .back {
+    ${tw`mb-8 mx-4`}
+  }
+
+  .back-btn {
+    ${tw`text-white bg-green-500 rounded font-bold py-2 px-4 `}
+  }
 `;

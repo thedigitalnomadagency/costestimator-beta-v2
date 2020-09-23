@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 //actions
 import {
@@ -69,6 +70,11 @@ export default () => {
 
   return (
     <SettingsWrapper>
+      <div className="back">
+        <Link to="/" className="back-btn">
+          Back To Home
+        </Link>
+      </div>
       <form className="form">
         <div className="input-wrapper">
           <label className="label" htmlFor="minDistance">
