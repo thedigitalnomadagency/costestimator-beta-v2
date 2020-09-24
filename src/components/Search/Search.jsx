@@ -46,7 +46,7 @@ export default ({ setAddress, placeholder }) => {
           disabled={!ready}
           placeholder={placeholder}
         />
-        <ComboboxPopover style={{ zIndex: 30 }}>
+        <ComboboxPopover style={{ zIndex: 60 }}>
           <ComboboxList>
             {status === 'OK' &&
               data.map(({ description }, idx) => (

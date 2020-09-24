@@ -14,7 +14,7 @@ import { SettingsWrapper } from './SettingPage.styles';
 
 export default () => {
   const minDist = useSelector((state) => state.config.minDistance);
-  const config = useSelector((state) => state.config.config);
+  const prices = useSelector((state) => state.config.config);
   const dispatch = useDispatch();
 
   const [priceConfig, setConfig] = React.useState({
@@ -120,32 +120,34 @@ export default () => {
       </div>
 
       <div className="config-wrapper">
-        {config.length > 0 ? (
+        {prices.length > 0 ? (
           <>
-            {config.map((config, idx) => {
+            {prices.map((config, idx) => {
               return (
                 <div key={idx} className="config">
                   <h1>Min Distance: {config.minDistance}KM</h1>
                   <h2>Max Distance: {config.maxDistance}KM</h2>
                   <h3>Price: GH¢{config.price}</h3>
-                  <button
-                    className="delete"
-                    onClick={() => deletePriceConfig(config)}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
+                  {idx === prices.length - 1 && (
+                    <button
+                      className="delete"
+                      onClick={() => deletePriceConfig(config)}
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                      />
-                    </svg>
-                  </button>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                        />
+                      </svg>
+                    </button>
+                  )}
                 </div>
               );
             })}

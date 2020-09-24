@@ -1,11 +1,16 @@
 import tw, { styled } from 'twin.macro';
 
 export default styled.div`
-  .message {
-    ${tw` md:hidden`}
-  }
-  .app {
+  .desktop {
     ${tw`hidden md:grid md:grid-rows-2 xl:grid-cols-2  xl:grid-rows-1`}
+    height: 100vh;
+  }
+
+  .mobile {
+    ${tw`md:hidden `}
+  }
+
+  .map-container {
     height: 100vh;
   }
 
@@ -19,19 +24,19 @@ export default styled.div`
   }
 
   .form-container {
-    ${tw`bg-green-700`}
+    ${tw`bg-green-700 relative`}
   }
 
   .title-wrapper {
-    ${tw`flex justify-between py-5 px-5 text-white text-lg`}
+    ${tw`absolute top-0 z-50 w-full md:relative flex justify-between py-5 px-5 text-white text-lg bg-green-700`}
   }
 
   .form-wrapper {
-    ${tw`flex flex-col justify-center items-center px-24 py-2 lg:py-16`}
+    ${tw`flex flex-col justify-center items-center md:px-24 lg:py-16`}
   }
 
   .price-wrapper {
-    ${tw`flex justify-between items-center px-24 py-3`}
+    ${tw`flex flex-col md:flex-row justify-between items-center px-24 py-3`}
   }
 
   .amount-box {
@@ -63,7 +68,7 @@ export default styled.div`
   }
 
   .controls-box {
-    ${tw`flex flex-col items-center text-white w-auto h-32`}
+    ${tw`flex md:flex-col items-center justify-between  text-white w-32  md:w-auto h-32`}
   }
 
   .control-btn {
@@ -87,10 +92,20 @@ export default styled.div`
   }
 
   .price-btn {
-    ${tw`outline-none border border-white text-white rounded w-48 font-bold py-2 uppercase tracking-wider`}
+    ${tw`outline-none border border-white text-white rounded w-32 md:w-48 md:font-bold py-1 md:py-2 uppercase tracking-wider mt-2 md:mt-0`}
   }
 
   .footer {
-    ${tw`flex justify-end px-10 text-green-500`}
+    ${tw`md:absolute md:bottom-0 md:right-0 flex justify-end px-10 text-green-500 align-bottom`}
+  }
+
+  .mobile-form {
+    ${tw`md:hidden absolute h-64 bottom-0 w-full z-50 bg-green-700 pt-10 overflow-y-scroll px-2`}
+    border-top-right-radius: 1rem;
+    border-top-left-radius: 1rem;
+  }
+
+  .results {
+    ${tw`text-sm text-white text-center my-3`}
   }
 `;

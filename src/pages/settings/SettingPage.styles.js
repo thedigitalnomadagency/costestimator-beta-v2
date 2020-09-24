@@ -4,7 +4,7 @@ export const SettingsWrapper = styled.div`
   ${tw`container mx-auto mt-10`};
 
   .form {
-    ${tw`hidden w-full md:flex md:mb-6`};
+    ${tw`w-full md:flex md:mb-6`};
   }
 
   .input-wrapper {
