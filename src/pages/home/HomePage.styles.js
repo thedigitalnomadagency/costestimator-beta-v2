@@ -8,6 +8,7 @@ export default styled.div`
 
   .mobile {
     ${tw`md:hidden relative `}
+    height: 100vh;
   }
 
   .map-container {
