@@ -7,7 +7,7 @@ export default styled.div`
   }
 
   .mobile {
-    ${tw`md:hidden `}
+    ${tw`md:hidden relative `}
   }
 
   .map-container {
