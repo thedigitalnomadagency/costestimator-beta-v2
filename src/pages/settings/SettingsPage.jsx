@@ -8,6 +8,7 @@ import {
   deleteConfig,
   resetConfig,
 } from '../../redux/PriceConfig/config-actions';
+import { signOut } from '../../redux/user/user-actions';
 
 //styling
 import { SettingsWrapper } from './SettingPage.styles';
@@ -74,6 +75,10 @@ export default () => {
         <Link to="/" className="back-btn">
           Back To Home
         </Link>
+
+        <button className="signOut" onClick={() => dispatch(signOut())}>
+          Sign Out
+        </button>
       </div>
       <form className="form">
         <div className="input-wrapper">

@@ -1,10 +1,43 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+
+//actions
+import { emailSignin } from '../../redux/user/user-actions';
 
 //styling
 import Wrapper from './Auth.styles';
 
 export default () => {
+  const dispatch = useDispatch();
+  const loading = useSelector((state) => state.user.signingIn);
+
+  const [credentials, setCredentials] = React.useState({
+    email: '',
+    password: '',
+  });
+
+  const { email, password } = credentials;
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setCredentials({
+      ...credentials,
+      [name]: value,
+    });
+  };
+
+  const signIn = (e) => {
+    e.preventDefault();
+
+    if (password === '' || email === '') {
+      console.log('fill all fields');
+      return;
+    }
+
+    dispatch(emailSignin(credentials));
+  };
+
   return (
     <Wrapper>
       <div className="container">
@@ -22,6 +55,8 @@ export default () => {
                 required
                 className="input"
                 placeholder="Email address"
+                value={email}
+                onChange={handleChange}
               />
             </div>
             <div className="input-outer">
@@ -32,20 +67,22 @@ export default () => {
                 required
                 className="input"
                 placeholder="Password"
+                value={password}
+                onChange={handleChange}
               />
             </div>
           </div>
 
           <div className="link-container">
-            <div class="text-sm leading-5">
+            <div className="link-inner">
               <Link to="/register" className="link">
-                Don't have an account? Sign In
+                Don't have an account? Register
               </Link>
             </div>
           </div>
 
           <div className="submit-container">
-            <button type="submit" className="submit-btn">
+            <button className="submit-btn" onClick={signIn}>
               <span className="icon-box">
                 <svg className="icon" fill="currentColor" viewBox="0 0 20 20">
                   <path
@@ -55,7 +92,7 @@ export default () => {
                   />
                 </svg>
               </span>
-              Sign in
+              {loading ? 'Signing in...' : 'Sign in'}
             </button>
           </div>
         </form>

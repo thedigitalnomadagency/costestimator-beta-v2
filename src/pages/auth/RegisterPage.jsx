@@ -1,10 +1,43 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 //styling
 import Wrapper from './Auth.styles';
 
+//actions
+import { register } from '../../redux/user/user-actions';
+
 export default () => {
+  const dispatch = useDispatch();
+  const loading = useSelector((state) => state.user.registering);
+  const [credentials, setCredentials] = React.useState({
+    companyName: '',
+    email: '',
+    password: '',
+  });
+
+  const { companyName, email, password } = credentials;
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setCredentials({
+      ...credentials,
+      [name]: value,
+    });
+  };
+
+  const registerUser = (e) => {
+    e.preventDefault();
+
+    if (companyName === '' || password === '' || email === '') {
+      console.log('fill all fields');
+      return;
+    }
+
+    dispatch(register(credentials));
+  };
+
   return (
     <Wrapper>
       <div className="container">
@@ -16,12 +49,14 @@ export default () => {
           <div className="input-box">
             <div className="input-outer">
               <input
-                aria-label="User Name"
-                name="username"
+                aria-label="Company Name"
+                name="companyName"
                 type="text"
                 required
                 className="input"
-                placeholder="Username"
+                placeholder="Company Name"
+                value={companyName}
+                onChange={handleChange}
               />
             </div>
             <div className="input-outer">
@@ -32,6 +67,8 @@ export default () => {
                 required
                 className="input"
                 placeholder="Email address"
+                value={email}
+                onChange={handleChange}
               />
             </div>
             <div className="input-outer">
@@ -42,12 +79,14 @@ export default () => {
                 required
                 className="input"
                 placeholder="Password"
+                value={password}
+                onChange={handleChange}
               />
             </div>
           </div>
 
           <div className="link-container">
-            <div class="text-sm leading-5">
+            <div className="link-inner">
               <Link to="/signin" className="link">
                 Already have an account? Sign In
               </Link>
@@ -55,7 +94,7 @@ export default () => {
           </div>
 
           <div className="submit-container">
-            <button type="submit" className="submit-btn">
+            <button className="submit-btn" onClick={registerUser}>
               <span className="icon-box">
                 <svg className="icon" fill="currentColor" viewBox="0 0 20 20">
                   <path
@@ -65,7 +104,7 @@ export default () => {
                   />
                 </svg>
               </span>
-              Register
+              {loading ? 'Registering...' : 'Register'}
             </button>
           </div>
         </form>

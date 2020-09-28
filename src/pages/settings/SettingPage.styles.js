@@ -42,10 +42,14 @@ export const SettingsWrapper = styled.div`
   }
 
   .back {
-    ${tw`mb-8 mx-4`}
+    ${tw`mb-8 mx-4 flex justify-between`}
   }
 
   .back-btn {
     ${tw`text-white bg-green-500 rounded font-bold py-2 px-4 `}
+  }
+
+  .signOut {
+    ${tw`text-red-700 focus:outline-none font-bold`}
   }
 `;

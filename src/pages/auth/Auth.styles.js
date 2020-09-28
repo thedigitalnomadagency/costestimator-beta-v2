@@ -50,4 +50,8 @@ export default styled.div`
   .link {
     ${tw`font-medium text-green-600 hover:text-green-500 focus:outline-none focus:underline transition ease-in-out duration-150`}
   }
+
+  .link-inner {
+    ${tw`text-sm leading-5`}
+  }
 `;
