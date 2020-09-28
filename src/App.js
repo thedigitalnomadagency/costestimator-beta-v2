@@ -19,7 +19,6 @@ const App = () => {
   const currentUser = useSelector((state) => state.user.currentUser);
 
   React.useEffect(() => {
-    console.log('mounted');
     dispatch(checkUserSesssion());
   }, [dispatch]);
 

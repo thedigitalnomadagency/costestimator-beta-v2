@@ -16,13 +16,13 @@ const config = {
 firebase.initializeApp(config);
 
 export const auth = firebase.auth();
-export const firestore = firebase.firestore();
+export const db = firebase.firestore();
 
 //creates new user doc in firestore if it does not exist
 export const createUserDocument = async (userAuthObj, additionalData) => {
   if (!userAuthObj) return;
 
-  const userDocRef = firestore.doc(`users/${userAuthObj.uid}`);
+  const userDocRef = db.doc(`users/${userAuthObj.uid}`);
   const userDocSnapshot = await userDocRef.get();
 
   if (!userDocSnapshot.exists) {
@@ -50,6 +50,48 @@ export const getCurrentUser = () => {
       unsubscribe();
     }, reject);
   });
+};
+
+export const getPriceConfig = async (uid) => {
+  try {
+    const configSnapshot = await db
+      .collection(`users/${uid}/config`)
+      .orderBy('addedAt', 'asc')
+      .get();
+    return configSnapshot.docs.map((docSnapshot) => {
+      return {
+        id: docSnapshot.id,
+        ...docSnapshot.data(),
+      };
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const addPriceConfig = async (uid, config) => {
+  const addedAt = new Date();
+  try {
+    const ref = await db
+      .collection(`users/${uid}/config`)
+      .add({ ...config, addedAt });
+    const snapshot = await ref.get();
+    return {
+      id: snapshot.id,
+      ...snapshot.data(),
+    };
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const deletePriceConfig = async (uid, configId) => {
+  try {
+    const docRef = db.doc(`users/${uid}/config/${configId}`);
+    docRef.delete();
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 export default firebase;

@@ -6,16 +6,17 @@ import { Link } from 'react-router-dom';
 import {
   addConfig,
   deleteConfig,
-  resetConfig,
-} from '../../redux/PriceConfig/config-actions';
+} from '../../redux/priceConfig/config-actions';
 import { signOut } from '../../redux/user/user-actions';
 
 //styling
 import { SettingsWrapper } from './SettingPage.styles';
 
 export default () => {
+  const userId = useSelector((state) => state.user.currentUser.id);
   const minDist = useSelector((state) => state.config.minDistance);
   const prices = useSelector((state) => state.config.config);
+  const loading = useSelector((state) => state.config.loading);
   const dispatch = useDispatch();
 
   const [priceConfig, setConfig] = React.useState({
@@ -49,9 +50,12 @@ export default () => {
 
     dispatch(
       addConfig({
-        minDistance: minDist,
-        maxDistance: +maxDistance,
-        price: +price,
+        userId,
+        config: {
+          minDistance: minDist,
+          maxDistance: +maxDistance,
+          price: +price,
+        },
       })
     );
 
@@ -63,10 +67,6 @@ export default () => {
 
   const deletePriceConfig = (config) => {
     dispatch(deleteConfig(config));
-  };
-
-  const resetPriceConfig = () => {
-    dispatch(resetConfig());
   };
 
   return (
@@ -116,11 +116,7 @@ export default () => {
       </form>
       <div className="btn-wrapper">
         <button className="btn" onClick={addPriceConfig}>
-          Add Price Config
-        </button>
-
-        <button className="btn btn-red" onClick={resetPriceConfig}>
-          Reset Config
+          {loading ? 'Adding...' : 'Add Price Config'}
         </button>
       </div>
 
@@ -129,14 +125,14 @@ export default () => {
           <>
             {prices.map((config, idx) => {
               return (
-                <div key={idx} className="config">
+                <div key={config.id} className="config">
                   <h1>Min Distance: {config.minDistance}KM</h1>
                   <h2>Max Distance: {config.maxDistance}KM</h2>
                   <h3>Price: GH¢{config.price}</h3>
                   {idx === prices.length - 1 && (
                     <button
                       className="delete"
-                      onClick={() => deletePriceConfig(config)}
+                      onClick={() => deletePriceConfig({ userId, config })}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
