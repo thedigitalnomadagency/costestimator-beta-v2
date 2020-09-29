@@ -3,10 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 //actions
-import {
-  addConfig,
-  deleteConfig,
-} from '../../redux/priceConfig/config-actions';
+import { addConfig, deleteConfig } from '../../redux/config/config-actions';
 import { signOut } from '../../redux/user/user-actions';
 
 //styling
