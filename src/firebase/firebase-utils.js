@@ -18,7 +18,6 @@ firebase.initializeApp(config);
 export const auth = firebase.auth();
 export const db = firebase.firestore();
 
-//creates new user doc in firestore if it does not exist
 export const createUserDocument = async (userAuthObj, additionalData) => {
   if (!userAuthObj) return;
 
