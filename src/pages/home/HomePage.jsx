@@ -51,7 +51,6 @@ export default () => {
 
   const handleChange = (e) => {
     const { value } = e.target;
-
     setAmount(+value);
   };
 
@@ -62,7 +61,7 @@ export default () => {
           distance <= config.maxDistance && distance >= config.minDistance
       );
 
-      if (price && distance) {
+      if (price) {
         const newPrice = price.price;
         setPrice(newPrice);
         setError('');
@@ -180,7 +179,7 @@ export default () => {
             </div>
           </div>
 
-          {price !== 0 && directions !== null && (
+          {directions !== null && (
             <div className="summary-wrapper">
               <h1>Summary:</h1>
               <div className="summary">
@@ -338,7 +337,7 @@ export default () => {
               </div>
             </div>
 
-            {price !== 0 && directions !== null && (
+            {directions !== null && (
               <div className="summary-wrapper">
                 <h1>Summary:</h1>
                 <div className="summary">
