@@ -28,10 +28,23 @@ export default ({ setAddress, placeholder }) => {
 
   const handleInput = (e) => {
     const { value } = e.target;
-    if (value.includes('https://maps.google.com/maps')) {
-      const coords = value.match(/q=(-?[\d]*\.[\d]*)%2C(-?[\d]*\.[\d]*)/);
-      setValue(`${coords[1]}, ${coords[2]}`);
-      setAddress(`${coords[1]}, ${coords[2]}`);
+    if (value.includes('https://maps.google.com')) {
+      const coords1 = value.match(/q=(-?[\d]*\.[\d]*)%2C(-?[\d]*\.[\d]*)/);
+      const coords2 = value.match(/q=(-?[\d]*\.[\d]*),(-?[\d]*\.[\d]*)/);
+
+      if (coords1) {
+        setValue(`${coords1[1]}, ${coords1[2]}`);
+        setAddress(`${coords1[1]}, ${coords1[2]}`);
+
+        return;
+      }
+
+      if (coords2) {
+        setValue(`${coords2[1]}, ${coords2[2]}`);
+        setAddress(`${coords2[1]}, ${coords2[2]}`);
+
+        return;
+      }
     } else {
       setValue(value);
       setAddress(value);
