@@ -109,4 +109,8 @@ export default styled.div`
   .results {
     ${tw`text-sm text-white text-center my-3`}
   }
+
+  .error {
+    ${tw`text-red-800 font-bold text-xl`}
+  }
 `;

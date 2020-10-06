@@ -48,6 +48,7 @@ export default () => {
   const [price, setPrice] = React.useState(0);
   const [amount, setAmount] = React.useState(0);
   const [error, setError] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
 
   const handleChange = (e) => {
     const { value } = e.target;
@@ -56,20 +57,37 @@ export default () => {
 
   const calculatePrice = React.useCallback(
     (distance) => {
-      const price = priceConfig.find(
-        (config) =>
-          distance <= config.maxDistance && distance >= config.minDistance
-      );
+      if (distance <= 0) {
+        setError('Set pickup and destination locations');
+        return;
+      }
+
+      if (priceConfig.length === 0) {
+        setError('Set your price configurations');
+        return;
+      }
+
+      setLoading(true);
+      const length = priceConfig.length;
+      const maxDistance = priceConfig[length - 1].maxDistance;
+
+      const price = priceConfig.find((config) => {
+        if (config.maxDistance === maxDistance && distance > maxDistance) {
+          return true;
+        }
+
+        if (distance <= config.maxDistance && distance >= config.minDistance) {
+          return true;
+        }
+
+        return false;
+      });
 
       if (price) {
         const newPrice = price.price;
         setPrice(newPrice);
         setError('');
-      } else {
-        setError(
-          'Set pickup and destination locations or check your pricing configurations.'
-        );
-        setPrice(0);
+        setLoading(false);
       }
     },
     [priceConfig]
@@ -149,7 +167,7 @@ export default () => {
               className="price-btn"
               onClick={() => calculatePrice(distance)}
             >
-              Get Price
+              {loading ? 'Fetching...' : 'Get Price'}
             </button>
           </div>
 
@@ -197,7 +215,7 @@ export default () => {
           {error && (
             <div className="summary-wrapper">
               <div className="summary">
-                <h1 className="text">{error}</h1>
+                <h1 className="text error">{error}</h1>
               </div>
             </div>
           )}
@@ -213,18 +231,16 @@ export default () => {
           center={center}
           options={options}
         >
-          {destination !== '' && pickup !== '' && (
-            <DirectionsService
-              options={{
-                destination: destination,
-                origin: pickup,
-                travelMode: 'DRIVING',
-              }}
-              callback={directionsCallback}
-            />
-          )}
+          <DirectionsService
+            options={{
+              destination: destination,
+              origin: pickup,
+              travelMode: 'DRIVING',
+            }}
+            callback={directionsCallback}
+          />
 
-          {price !== 0 && (
+          {directions !== null && (
             <DirectionsRenderer
               options={{
                 directions: directions,
@@ -273,18 +289,16 @@ export default () => {
             center={center}
             options={options}
           >
-            {destination !== '' && pickup !== '' && (
-              <DirectionsService
-                options={{
-                  destination: destination,
-                  origin: pickup,
-                  travelMode: 'DRIVING',
-                }}
-                callback={directionsCallback}
-              />
-            )}
+            <DirectionsService
+              options={{
+                destination: destination,
+                origin: pickup,
+                travelMode: 'DRIVING',
+              }}
+              callback={directionsCallback}
+            />
 
-            {price !== 0 && (
+            {directions !== null && (
               <DirectionsRenderer
                 options={{
                   directions: directions,
@@ -305,7 +319,7 @@ export default () => {
                 className="price-btn"
                 onClick={() => calculatePrice(distance)}
               >
-                Get Price
+                {loading ? 'Fetching...' : 'Get Price'}
               </button>
             </div>
 
@@ -355,7 +369,7 @@ export default () => {
             {error && (
               <div className="summary-wrapper">
                 <div className="summary">
-                  <h1 className="text">{error}</h1>
+                  <h1 className="text error">{error}</h1>
                 </div>
               </div>
             )}

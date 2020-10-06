@@ -27,7 +27,15 @@ export default ({ setAddress, placeholder }) => {
   });
 
   const handleInput = (e) => {
-    setValue(e.target.value);
+    const { value } = e.target;
+    if (value.includes('https://maps.google.com/maps')) {
+      const coords = value.match(/q=(-?[\d]*\.[\d]*)%2C(-?[\d]*\.[\d]*)/);
+      setValue(`${coords[1]}, ${coords[2]}`);
+      setAddress(`${coords[1]}, ${coords[2]}`);
+    } else {
+      setValue(value);
+      setAddress(value);
+    }
   };
 
   const handleSelect = async (address) => {
