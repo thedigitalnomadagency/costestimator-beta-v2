@@ -5,7 +5,6 @@ import {
   DirectionsService,
   DirectionsRenderer,
 } from '@react-google-maps/api';
-import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 //components
@@ -33,89 +32,26 @@ const center = {
   lng: -0.186964,
 };
 
-export default () => {
-  const priceConfig = useSelector((state) => state.config.config);
-
+export default ({
+  pickup,
+  setPickup,
+  destination,
+  setDestination,
+  directions,
+  distance,
+  error,
+  loading,
+  handleChange,
+  calculatePrice,
+  subtract,
+  add,
+  directionsCallback,
+  price,
+}) => {
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries,
   });
-
-  const [pickup, setPickup] = React.useState('');
-  const [destination, setDestination] = React.useState('');
-  const [directions, setDirections] = React.useState(null);
-  const [distance, setDistance] = React.useState(0);
-  const [price, setPrice] = React.useState(0);
-  const [amount, setAmount] = React.useState(0);
-  const [error, setError] = React.useState('');
-  const [loading, setLoading] = React.useState(false);
-
-  const handleChange = (e) => {
-    const { value } = e.target;
-    setAmount(+value);
-  };
-
-  const calculatePrice = React.useCallback(
-    (distance) => {
-      if (distance <= 0) {
-        setError('Set pickup and destination locations');
-        return;
-      }
-
-      if (priceConfig.length === 0) {
-        setError('Set your price configurations');
-        return;
-      }
-
-      setLoading(true);
-      const length = priceConfig.length;
-      const maxDistance = priceConfig[length - 1].maxDistance;
-
-      const price = priceConfig.find((config) => {
-        if (config.maxDistance === maxDistance && distance > maxDistance) {
-          return true;
-        }
-
-        if (distance <= config.maxDistance && distance >= config.minDistance) {
-          return true;
-        }
-
-        return false;
-      });
-
-      if (price) {
-        const newPrice = price.price;
-        setPrice(newPrice);
-        setError('');
-        setLoading(false);
-      }
-    },
-    [priceConfig]
-  );
-
-  const subtract = () => {
-    if (price && amount) {
-      const newPrice = price - amount;
-      setPrice(newPrice);
-    }
-  };
-
-  const add = () => {
-    if (price && amount) {
-      const newPrice = price + amount;
-      setPrice(newPrice);
-    }
-  };
-
-  const directionsCallback = React.useCallback((response) => {
-    if (response !== null) {
-      if (response.status === 'OK') {
-        setDirections(response);
-        setDistance(response.routes[0].legs[0].distance.value / 1000);
-        setError('');
-      }
-    }
-  }, []);
 
   if (loadError) return 'Could not load app. Check internet connection';
   if (!isLoaded) return 'Loading App...';
@@ -201,7 +137,15 @@ export default () => {
             <div className="summary-wrapper">
               <h1>Summary:</h1>
               <div className="summary">
-                <h1 className="text">{directions.routes[0].summary}</h1>
+                <div>
+                  <h1 className="text">
+                    Pickup: {directions.routes[0].legs[0].start_address}
+                  </h1>
+                  <h1 className="text">
+                    Destination: {directions.routes[0].legs[0].end_address}
+                  </h1>
+                </div>
+
                 <h1 className="text">
                   Distance: {directions.routes[0].legs[0].distance.text}
                 </h1>
@@ -355,7 +299,14 @@ export default () => {
               <div className="summary-wrapper">
                 <h1>Summary:</h1>
                 <div className="summary">
-                  <h1 className="text">{directions.routes[0].summary}</h1>
+                  <div>
+                    <h1 className="text">
+                      Pickup: {directions.routes[0].legs[0].start_address}
+                    </h1>
+                    <h1 className="text">
+                      Destination: {directions.routes[0].legs[0].end_address}
+                    </h1>
+                  </div>
                   <h1 className="text">
                     Distance: {directions.routes[0].legs[0].distance.text}
                   </h1>
