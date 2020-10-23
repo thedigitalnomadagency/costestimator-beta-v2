@@ -54,7 +54,7 @@ export default ({
   });
 
   if (loadError) return 'Could not load app. Check internet connection';
-  if (!isLoaded) return 'Loading Map...';
+  if (!isLoaded) return 'Loading Map....';
 
   return (
     <Wrapper>
